@@ -10,9 +10,11 @@ import {
   CommandItem,
   CommandList
 } from '@/components/ui/command';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 export default function Home() {
   const [input, setInput] = useState<string>('');
+  const [defaultApi, setDefaultApi] = useState<string>('cloudflare');
   const [searchResults, setSearchResults] = useState<{
     results: string[];
     duration: number;
@@ -24,14 +26,20 @@ export default function Home() {
       // once deployed, prefix this with your cloudflare worker url
       // i.e.: https://<name>.<account-name>.workers.dev/api/search?q=${input}
 
-      const res = await fetch(`/api/search?q=${input}`);
+      let url = `/api/search?q=${input}`;
+
+      if (defaultApi === 'cloudflare') {
+        url = `https://fast-api.asonni.workers.dev/api/search?q=${input}`;
+      }
+
+      const res = await fetch(url);
       const data = (await res.json()) as {
         results: string[];
         duration: number;
       };
       setSearchResults(data);
     })();
-  }, [input]);
+  }, [input, defaultApi]);
 
   return (
     <main className="h-screen w-screen grainy">
@@ -81,6 +89,16 @@ export default function Home() {
             </CommandList>
           </Command>
         </div>
+        <Tabs
+          defaultValue={defaultApi}
+          className="w-[400px] text-center"
+          onValueChange={setDefaultApi}
+        >
+          <TabsList>
+            <TabsTrigger value="cloudflare">Use Cloudflare</TabsTrigger>
+            <TabsTrigger value="vercel">Use Vercel</TabsTrigger>
+          </TabsList>
+        </Tabs>
       </div>
     </main>
   );
