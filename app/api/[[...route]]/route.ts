@@ -1,8 +1,8 @@
-import { Redis } from '@upstash/redis/cloudflare';
 import { Hono } from 'hono';
-import { env } from 'hono/adapter';
 import { cors } from 'hono/cors';
+import { env } from 'hono/adapter';
 import { handle } from 'hono/vercel';
+import { Redis } from '@upstash/redis/cloudflare';
 
 export const runtime = 'edge';
 
@@ -13,7 +13,12 @@ type TEnvConfig = {
   UPSTASH_REDIS_REST_URL: string;
 };
 
-app.use('/*', cors({ origin: ['http://localhost:3000'] }));
+app.use(
+  '/*',
+  cors({
+    origin: ['http://localhost:3000', 'https://fast-api-ecru.vercel.app']
+  })
+);
 app.get('/search', async c => {
   try {
     const { UPSTASH_REDIS_REST_TOKEN, UPSTASH_REDIS_REST_URL } =
