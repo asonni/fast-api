@@ -1,0 +1,6 @@
+name = "fast-api"
+compatibility_date = "2024-04-02"
+
+[vars]
+UPSTASH_REDIS_REST_TOKEN = "Aa53ASQgZDBlN2JmOGMtYTBiNC00YjdmLTk5NGEtODM0OTI1Y2YzMjhjOGNmYTE5MTNlZjZiNGJlYmJlMzE5NTU3MTkzYjUyZTA="
+UPSTASH_REDIS_REST_URL = "https://eminent-bulldog-44663.upstash.io"
